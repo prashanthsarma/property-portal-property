@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 import { app } from './app';
 
 const start = async () => {
@@ -7,19 +6,21 @@ const start = async () => {
     throw new Error('JWT_KEY must be defined');
   }
 
+  const mongoUri = 'mongodb://property-mongo-srv:27017/auth'
+
   try {
-    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
+    await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true
     });
-    console.log('Connected to MongoDb');
+    console.log('Connected to Property MongoDb');
   } catch (err) {
     console.error(err);
   }
 
-  app.listen(5000, () => {
-    console.log('Auth listening on port 5000!');
+  app.listen(5001, () => {
+    console.log('Property Service listening on port 5001!');
   });
 };
 
