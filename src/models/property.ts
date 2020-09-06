@@ -1,30 +1,14 @@
 import mongoose from 'mongoose';
-
-
-// An interface that describes the properties
-// that are requried to create a new Property
-interface PropertyAttrs {
-  header: string;
-  propertyType: PropertyType;
-  area: number;
-  areaType: AreaType;
-  price: number;
-  priceType: PriceType;
-  facilities: Facility[];
-  address: string;
-  city: string;
-  lat: number;
-  lon: number;
-  userId: number;
-}
+import { IPropertyAttrs, PropertyType, AreaType, PriceType, Facility }
+  from '@prashanthsarma/property-portal-common'
 
 interface PropertyModel extends mongoose.Model<PropertyDoc> {
-  build(attrs: PropertyAttrs): PropertyDoc;
+  build(attrs: IPropertyAttrs): PropertyDoc;
 }
 
 // An interface that describes the properties
 // that a Property Document has
-interface PropertyDoc extends mongoose.Document {
+export interface PropertyDoc extends mongoose.Document {
   header: string;
   propertyType: PropertyType;
   area: number;
@@ -36,7 +20,7 @@ interface PropertyDoc extends mongoose.Document {
   city: string;
   lat: number;
   lon: number;
-  userId: number;
+  userId: string;
 }
 
 const propertySchema = new mongoose.Schema(
@@ -85,6 +69,10 @@ const propertySchema = new mongoose.Schema(
       type: Number,
       required: false
     },
+    userId: {
+      type: String,
+      required: true
+    },
   },
   {
     toJSON: {
@@ -98,7 +86,7 @@ const propertySchema = new mongoose.Schema(
 );
 
 
-propertySchema.statics.build = (attrs: PropertyAttrs) => {
+propertySchema.statics.build = (attrs: IPropertyAttrs) => {
   return new Property(attrs);
 };
 

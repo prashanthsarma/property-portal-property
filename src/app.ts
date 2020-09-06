@@ -3,7 +3,7 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
-import { errorHandler, NotFoundError } from '@sgtickets/common';
+import { errorHandler, NotFoundError } from '@prashanthsarma/property-portal-common';
 
 import { userListingRouter } from './routes/user/listing';
 import { listingRouter } from './routes/listing';
@@ -17,6 +17,7 @@ app.use(
     secure: false, //process.env.NODE_ENV !== 'test',
   })
 );
+
 if(process.env.NODE_ENV === 'development'){
   app.use(cors({ credentials: true, origin: "http://app.test.com:3000" }))
 }

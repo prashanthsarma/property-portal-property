@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import {mongo as mongoose} from 'mongoose';
 import { app } from './app';
 
 const start = async () => {
@@ -12,15 +12,15 @@ const start = async () => {
     await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true
+      // useCreateIndex: true
     });
     console.log('Connected to Property MongoDb');
   } catch (err) {
     console.error(err);
   }
 
-  app.listen(5001, () => {
-    console.log('Property Service listening on port 5001!');
+  app.listen(4001, () => {
+    console.log('Property Service listening on port 4001!');
   });
 };
 
