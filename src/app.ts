@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
+import mongoSanitize from 'express-mongo-sanitize';
 import { errorHandler, NotFoundError } from '@prashanthsarma/property-portal-common';
 
 import { userListingRouter } from './routes/user/listing';
@@ -11,6 +12,7 @@ import { listingRouter } from './routes/listing';
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
+app.use(mongoSanitize())
 app.use(
   cookieSession({
     signed: false,
