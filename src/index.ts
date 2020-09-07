@@ -1,4 +1,4 @@
-import {mongo as mongoose} from 'mongoose';
+import mongoose from 'mongoose';
 import { app } from './app';
 
 const start = async () => {
@@ -19,8 +19,8 @@ const start = async () => {
     console.error(err);
   }
 
-  app.listen(4001, () => {
-    console.log('Property Service listening on port 4001!');
+  app.listen(5000, () => {
+    console.log('Property Service listening on port 5000!');
   });
 };
 
