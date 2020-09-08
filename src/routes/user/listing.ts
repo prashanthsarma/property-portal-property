@@ -1,15 +1,54 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { validateRequest, NotAuthorizedError, currentUser, requireAuth, IListingResponse, IPropertyAttrs }
+import { validateRequest, NotAuthorizedError, IListingResponse, IPropertyAttrs, IUserAttrs }
   from '@prashanthsarma/property-portal-common';
 import { Property } from '../../models/property';
 import { validateProperty } from '../../middleware/validateProperty';
 import { awsS3 } from '../../services/awsS3';
 
-// import { validateProperty } from '../../middleware/validateProperty';
-
 const router = express.Router();
+
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: {id: string, email: string};
+    }
+  }
+}
+
+export const currentUser = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.session?.jwt) {
+    return next();
+  }
+
+  try {
+    const payload = jwt.verify(
+      req.session.jwt,
+      process.env.JWT_KEY!
+    ) as {id: string, email: string};
+    req.currentUser = payload;
+  } catch (err) {}
+
+  next();
+};
+
+
+const requireAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.currentUser) {
+    throw new NotAuthorizedError();
+  }
+
+  next();
+};
 
 router.get(
   '/api/property/user/listing',
@@ -24,9 +63,13 @@ router.get(
   }
 );
 
+
+
+
 router.post(
   '/api/property/user/listing',
-  validateProperty(),
+  // validateProperty(),
+  // validateRequest,
   currentUser,
   requireAuth,
   async (req: Request, res: Response) => {

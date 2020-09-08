@@ -1,13 +1,16 @@
+import dotenv from 'dotenv';
+dotenv.config()
+
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { app } from '../app';
 import { seedPropertyData } from '../_data/seedPropertyData';
-import { Property } from '../models/property';
+
 
 const start = async () => {
-
-  process.env.JWT_KEY = 'asdfasdf';
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  if (!process.env.JWT_KEY) {
+    throw new Error('JWT_KEY must be definedn');
+  }
   
   try {
     const mongo = new MongoMemoryServer();

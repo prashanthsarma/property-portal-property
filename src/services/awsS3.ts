@@ -34,7 +34,7 @@ export class awsS3 {
 
     const imgName = `${id ? id : ''}_${uuid.v1()}.${extension}`;
 
-    const s3 = new AWS.S3({ accessKeyId: "AKIASDWHYXX6VLMUNBHV", secretAccessKey: process.env.AWS_SECRET, region: "us-east-2" });
+    const s3 = new AWS.S3({ accessKeyId: "AKIASDWHYXX65BK4NYEW", secretAccessKey: process.env.AWS_SECRET});
     const params = {
       Bucket: 'property-portal-images', Key: imgName,
       Body: image.dataBuffer, ACL: 'public-read'
@@ -49,7 +49,8 @@ export class awsS3 {
       }
       return null;
     }
-    catch{
+    catch (e) {
+      console.log(e)
       return null;
     }
   }

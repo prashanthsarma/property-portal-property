@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { Property } from '../models/property';
-import { IListingResponse } from '@prashanthsarma/property-portal-common'
+import { IListingResponse, BadRequestError, RequestValidationError, validateRequest } from '@prashanthsarma/property-portal-common'
+import { body } from 'express-validator';
 
 const router = express.Router();
 
