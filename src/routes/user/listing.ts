@@ -5,6 +5,7 @@ import { validateRequest, NotAuthorizedError, currentUser, requireAuth, IListing
   from '@prashanthsarma/property-portal-common';
 import { Property } from '../../models/property';
 import { validateProperty } from '../../middleware/validateProperty';
+import { awsS3 } from '../../services/awsS3';
 
 // import { validateProperty } from '../../middleware/validateProperty';
 
@@ -31,11 +32,30 @@ router.post(
   async (req: Request, res: Response) => {
     const propertyListing = req.body as IPropertyAttrs
     propertyListing.userId = req.currentUser!.id;
-    console.log(propertyListing);
-    const property =  Property.build(propertyListing);
-    
+
+    const property = Property.build(propertyListing);
+
+    const imagesToUpload = [...propertyListing.images];
+    propertyListing.images = []
+    const imageUrls: string[] = []
+    const imageUrlPromises: Promise<void>[] = []
+
+    const uploadMethod = async (img: string) => {
+      const imgLink = await awsS3.WriteImage(property.id, img);
+      if (imgLink != null) {
+        imageUrls.push(imgLink);
+      }
+    };
+
+    imagesToUpload.forEach(img => {
+      imageUrlPromises.push(uploadMethod(img))
+    });
+
+    await Promise.all(imageUrlPromises);
+    property.images = imageUrls;
+
     await property.save();
-    res.status(201).send();
+    res.status(201).send(property);
   }
 );
 

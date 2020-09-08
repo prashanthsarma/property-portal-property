@@ -15,6 +15,7 @@ export const seedPropertyData: PropertyDoc[] = [
     lat: -1,
     lon: -1,
     userId: "5d7a514b5d2c12c7449be043",
+    images:[]
 //    _id : "5d7a514b5d2c12c7449be044"
   }),
   Property.build({
@@ -30,6 +31,7 @@ export const seedPropertyData: PropertyDoc[] = [
     lat: -1,
     lon: -1,
     userId: "5d7a514b5d2c12c7449be043",
+    images:[]
 //    _id : "5d7a514b5d2c12c7449be044"
   }),
   Property.build({
@@ -45,6 +47,7 @@ export const seedPropertyData: PropertyDoc[] = [
     lat: -1,
     lon: -1,
     userId: "5d7a514b5d2c12c7449be043",
+    images:[]
 //    _id : "5d7a514b5d2c12c7449be044"
   }),
 ]

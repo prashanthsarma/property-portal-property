@@ -21,6 +21,7 @@ export interface PropertyDoc extends mongoose.Document {
   lat: number;
   lon: number;
   userId: string;
+  images: string[];
 }
 
 const propertySchema = new mongoose.Schema(
@@ -72,6 +73,10 @@ const propertySchema = new mongoose.Schema(
     userId: {
       type: String,
       required: true
+    },
+    images: {
+      type: [String],
+      required: false
     },
   },
   {
