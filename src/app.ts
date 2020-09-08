@@ -27,14 +27,12 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 app.use(userListingRouter);
-console.log("Enabled userListingRouter cors")
 app.use(listingRouter);
-console.log("Enabled listingRouter cors")
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
 });
 // app.use(logger);
-// app.use(errorHandler);
+app.use(errorHandler);
 
 export { app };

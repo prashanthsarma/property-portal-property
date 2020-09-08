@@ -5,7 +5,9 @@ import * as uuid from 'uuid';
 
 
 
-export class awsS3 {
+export class S3ImageHandler {
+
+  private static s3 = new AWS.S3({ accessKeyId: "AKIASDWHYXX65BK4NYEW", secretAccessKey: process.env.AWS_SECRET });
 
   public static getExtensionFromImageType = (imageType: string) => {
     let extension = 'png';  // default
@@ -27,22 +29,20 @@ export class awsS3 {
   public static WriteImage = async (id: string, dataURI: string) => {
 
     const image = imgDataUri.decode(dataURI);
-    if(image == null){
+    if (image == null) {
       return null;
     }
-    const extension = awsS3.getExtensionFromImageType(image.imageType);
-
+    const extension = S3ImageHandler.getExtensionFromImageType(image.imageType);
     const imgName = `${id ? id : ''}_${uuid.v1()}.${extension}`;
 
-    const s3 = new AWS.S3({ accessKeyId: "AKIASDWHYXX65BK4NYEW", secretAccessKey: process.env.AWS_SECRET});
     const params = {
       Bucket: 'property-portal-images', Key: imgName,
       Body: image.dataBuffer, ACL: 'public-read'
     };
 
 
-    try { // You should always catch your errors when using async/await
-      const s3Response = await s3.putObject(params).promise();
+    try {
+      const s3Response = await S3ImageHandler.s3.putObject(params).promise();
       if (!s3Response.$response.error) {
         console.log(`Successfully uploaded to - ${imgName}`);
         return imgName;
@@ -52,6 +52,19 @@ export class awsS3 {
     catch (e) {
       console.log(e)
       return null;
+    }
+  }
+
+  public static DeleteImage = async (imgName: string) => {
+    const params = { Bucket: 'property-portal-images', Key: imgName };
+    try {
+      const s3Response = await S3ImageHandler.s3.deleteObject(params).promise();
+      if (!s3Response.$response.error) {
+        console.log(`Successfully deleted - ${imgName}`);
+      }
+    }
+    catch (e) {
+      console.log(e)
     }
   }
 }
