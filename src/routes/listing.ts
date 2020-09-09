@@ -1,15 +1,11 @@
-import express, { Request, Response } from 'express';
-import { Property } from '../models/property';
-import { IListingResponse, BadRequestError, RequestValidationError, validateRequest } from '@prashanthsarma/property-portal-common'
+import express from 'express';
+import { listAllProperties } from '../controllers/list-properties';
 
 const router = express.Router();
 
 router.get(
   '/api/property/listing',
-  async (req: Request, res: Response) => {
-    const listing = await Property.find({});
-    res.status(200).send({ listing } as IListingResponse);
-  }
+  listAllProperties
 );
 
 export { router as listingRouter };

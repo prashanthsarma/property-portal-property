@@ -4,7 +4,7 @@ dotenv.config()
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { app } from '../app';
-import { seedPropertyData } from '../_data/seedPropertyData';
+import { seedPropertiesData } from '../_data/seed-properties-data';
 
 
 const start = async () => {
@@ -23,7 +23,7 @@ const start = async () => {
     });
     console.log('Connected to MongoDb');
     const seedSaving: Promise<any>[] = []
-    seedPropertyData.forEach(p => {
+    seedPropertiesData.forEach(p => {
       seedSaving.push(p.save());
     });
     await Promise.all(seedSaving);

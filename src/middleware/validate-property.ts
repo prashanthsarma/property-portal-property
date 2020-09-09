@@ -1,7 +1,6 @@
 import { body } from 'express-validator';
 
-export const validateProperty = () =>{
-  return [
+export const validateProperty = [
     body('header').trim().notEmpty().withMessage('Header is required for listing a property'),
     body('propertyType').trim().notEmpty().withMessage('Type of property is required for listing'),
     body('area').isFloat({ gt: 0 }).withMessage('Area of property is required for listing'),
@@ -11,4 +10,3 @@ export const validateProperty = () =>{
     body('address').trim().notEmpty().withMessage('The address of property is required'),
     body('city').trim().notEmpty().withMessage('The city where property is located is required'),
   ]
-}

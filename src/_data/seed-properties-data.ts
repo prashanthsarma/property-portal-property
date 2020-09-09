@@ -1,7 +1,7 @@
 import { PropertyDoc, Property } from "../models/property";
 import { PropertyType, AreaType, PriceType, Facility } from "@prashanthsarma/property-portal-common";
 
-export const seedPropertyData: PropertyDoc[] = [
+export const seedPropertiesData: PropertyDoc[] = [
   Property.build({
     header: "1BHK in Mahadevapura",
     propertyType: PropertyType.Apartment,
@@ -12,11 +12,10 @@ export const seedPropertyData: PropertyDoc[] = [
     facilities: [Facility.PowerBackUp],
     address: "Mahadevpura",
     city: "Bengaluru",
-    lat: -1,
-    lon: -1,
+    lat: 0,
+    lon: 0,
     userId: "5d7a514b5d2c12c7449be043",
     images:[]
-//    _id : "5d7a514b5d2c12c7449be044"
   }),
   Property.build({
     header: "2BHK in CV Raman Nagar",
@@ -32,7 +31,6 @@ export const seedPropertyData: PropertyDoc[] = [
     lon: -1,
     userId: "5d7a514b5d2c12c7449be043",
     images:[]
-//    _id : "5d7a514b5d2c12c7449be044"
   }),
   Property.build({
     header: "3BHK in a Good area",
@@ -48,6 +46,5 @@ export const seedPropertyData: PropertyDoc[] = [
     lon: -1,
     userId: "5d7a514b5d2c12c7449be043",
     images:[]
-//    _id : "5d7a514b5d2c12c7449be044"
   }),
 ]
