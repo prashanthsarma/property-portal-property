@@ -64,17 +64,18 @@ router.delete(
     const id = req.params.id;
     const property = await Property.findOne({ _id: id })
     if (property?.userId === req.currentUser!.id) {
-      
-      const imagesToDelete = [...property.images];
-      const imageUrlPromises: Promise<void>[] = []
-      imagesToDelete.forEach(img => {
-        imageUrlPromises.push(S3ImageHandler.DeleteImage(img))
-      });
-  
-      await Promise.all(imageUrlPromises);
+      const { images } = property;
+      if (images && images.length > 0) {
+        const imagesToDelete = [...property.images];
+        const imageUrlPromises: Promise<void>[] = []
+        imagesToDelete.forEach(img => {
+          imageUrlPromises.push(S3ImageHandler.DeleteImage(img))
+        });
 
+        await Promise.all(imageUrlPromises);
+      }
       await Property.deleteOne({ _id: id })
-      S3ImageHandler.DeleteImage
+      
       const listing = await Property.find({
         userId: req.currentUser!.id,
       });
