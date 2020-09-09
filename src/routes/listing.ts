@@ -1,5 +1,5 @@
 import express from 'express';
-import { listAllProperties } from '../controllers/list-properties';
+import { listAllProperties } from '../controllers/listAllProperties';
 
 const router = express.Router();
 

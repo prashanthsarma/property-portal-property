@@ -4,7 +4,7 @@ dotenv.config()
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { app } from '../app';
-import { seedPropertiesData } from '../_data/seed-properties-data';
+import { seedPropertiesData } from '../_data/seedPropertiesData';
 
 
 const start = async () => {

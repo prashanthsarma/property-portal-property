@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { IPropertyAttrs } from "@prashanthsarma/property-portal-common";
 import { Property } from "../../models/property";
-import { S3ImageHandler } from "../../services/s3-image-handler";
+import { S3ImageHandler } from "../../services/S3ImageHandler";
 
 
 export const addUserProperty = async (req: Request, res: Response) => {

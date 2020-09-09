@@ -2,9 +2,9 @@ import express, { Request, Response, NextFunction } from 'express';
 import { validateRequest, NotAuthorizedError, IListingResponse, IPropertyAttrs, currentUser, requireAuth }
   from '@prashanthsarma/property-portal-common';
 import { Property } from '../../models/property';
-import { validateProperty } from '../../middleware/validate-property';
-import { S3ImageHandler } from '../../services/s3-image-handler';
-import { listUserProperties, addUserProperty, removeUserProperty } from '../../controllers/user-properties';
+import { validateProperty } from '../../middleware/validateProperty';
+import { S3ImageHandler } from '../../services/S3ImageHandler';
+import { listUserProperties, addUserProperty, removeUserProperty } from '../../controllers/userProperties';
 
 const router = express.Router();
 

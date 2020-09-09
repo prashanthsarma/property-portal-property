@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Property } from "../../models/property";
-import { S3ImageHandler } from "../../services/s3-image-handler";
+import { S3ImageHandler } from "../../services/S3ImageHandler";
 import { IListingResponse, NotAuthorizedError } from "@prashanthsarma/property-portal-common";
 
 
