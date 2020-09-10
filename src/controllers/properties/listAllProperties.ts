@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Property } from "../models/property";
+import { Property } from "../../models/property";
 import { IListingResponse } from "@prashanthsarma/property-portal-common";
 
 export const listAllProperties = async (req: Request, res: Response) => {
