@@ -22,7 +22,7 @@ router.get('/api/property/listing/:id',
   listPropertyById
 );
 
-router.delete('/api/property/listing/:id', currentUser, requireAuth,
+router.put('/api/property/listing/:id', currentUser, requireAuth,
   editUserProperty
 );
 

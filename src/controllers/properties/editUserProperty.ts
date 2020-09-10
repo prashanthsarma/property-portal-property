@@ -10,15 +10,16 @@ export const editUserProperty = async (req: Request, res: Response) => {
 
 
   const newPropertyAttrs = req.body as IPropertyAttrs
-  if (newPropertyAttrs.userId != req.currentUser!.id) {
-    throw new NotAuthorizedError;
-  }
-
   const oldProperty = await Property.findOne({ _id: id });
   if (!oldProperty) {
     throw new BadRequestError('Cannot find the property to update')
   }
 
+  if (oldProperty.userId != req.currentUser!.id) {
+    throw new NotAuthorizedError;
+  }
+
+  newPropertyAttrs.userId = oldProperty.userId;
   // Removing images for old property
   const { images } = oldProperty;
   if (images && images.length > 0) {
@@ -51,6 +52,6 @@ export const editUserProperty = async (req: Request, res: Response) => {
   const newProperty = Property.build(newPropertyAttrs);
   newProperty.images = imageUrls;
 
-  Property.findOneAndUpdate({_id: id}, newProperty);
+  await Property.findOneAndUpdate({_id: id}, newProperty);
   res.status(200).send(newProperty);
 }
