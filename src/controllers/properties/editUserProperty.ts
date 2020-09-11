@@ -19,27 +19,20 @@ export const editUserProperty = async (req: Request, res: Response) => {
     throw new NotAuthorizedError;
   }
 
-  newPropertyAttrs.userId = oldProperty.userId;
-  // Removing images for old property
-  const { images } = oldProperty;
-  if (images && images.length > 0) {
-    const imagesToDelete = [...images];
-    const imageUrlPromises: Promise<void>[] = []
-    imagesToDelete.forEach(img => {
-      imageUrlPromises.push(S3ImageHandler.DeleteImage(img))
-    });
-    await Promise.all(imageUrlPromises);
-  }
-
   const imagesToUpload = [...newPropertyAttrs.images];
   newPropertyAttrs.images = []
   const imageUrls: string[] = []
   const imageUrlPromises: Promise<void>[] = []
 
   const uploadMethod = async (img: string) => {
-    const imgLink = await S3ImageHandler.WriteImage(newProperty.id, img);
-    if (imgLink != null) {
-      imageUrls.push(imgLink);
+    if (img.startsWith("data")) {
+      const imgLink = await S3ImageHandler.WriteImage(oldProperty.id, img);
+      if (imgLink != null) {
+        imageUrls.push(imgLink);
+      }
+    }
+    else {
+      imageUrls.push(img);
     }
   };
 
@@ -47,11 +40,28 @@ export const editUserProperty = async (req: Request, res: Response) => {
     imageUrlPromises.push(uploadMethod(img))
   });
 
+
+  newPropertyAttrs.userId = oldProperty.userId;
+  // Removing images for old property
+  const { images } = oldProperty;
+  if (images && images.length > 0) {
+    const imagesToDelete = [...images];
+    const imageUrlPromises: Promise<void>[] = []
+    imagesToDelete.filter(img => !imagesToUpload.includes(img)).forEach(img => {
+      imageUrlPromises.push(S3ImageHandler.DeleteImage(img))
+    });
+    await Promise.all(imageUrlPromises);
+  }
+
+
+
   await Promise.all(imageUrlPromises);
 
-  const newProperty = Property.build(newPropertyAttrs);
+
+  const newProperty = Property.build({ _id: id, ...newPropertyAttrs } as IPropertyAttrs);
   newProperty.images = imageUrls;
 
-  await Property.findOneAndUpdate({_id: id}, newProperty);
+  await Property.replaceOne({ _id: id }, newProperty);
+
   res.status(200).send(newProperty);
 }
